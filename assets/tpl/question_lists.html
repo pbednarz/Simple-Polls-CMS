@@ -1,0 +1,27 @@
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Text</th>
+        <th>Allow multiple choices</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="question in questions">
+        <td>{{question.question_id}}</td>
+        <td>{{question.question_text}}</td>
+        <td>
+            <md-switch ng-model="question.allow_multiple_answers" aria-label="Switch 1"></md-switch>
+        </td>
+        <td><a href="#/edit/{{question.question_id}}" class="btn btn-default btn-sm"><i
+                class="glyphicon glyphicon-pencil"></i></a></td>
+    </tr>
+    </tbody>
+</table>
+
+<md-button class="md-raised md-primary" ng-href="#/add-question">Add New Question</md-button>
+<canvas id="doughnut" class="chart chart-pie" data="data" options="chartOptions" width="871" height="376" style="width: 871px; height: 376px;display: block;
+        margin-left: auto;
+        margin-right: auto;"
+        labels="labels"></canvas>
+</md-content>

@@ -1,0 +1,23 @@
+md-toolbar h1 {
+  font-size: 1.250em;
+  font-weight: 400;
+  margin: auto;
+}
+
+.docs-menu-icon {
+    background: none;
+    border: none;
+    margin-right: 16px;
+    padding: 0;
+}
+.docs-menu-separator-icon {
+    margin: 0;
+    padding: 0 10px;
+}
+.docs-menu-separator-icon img {
+    height: 16px;
+}
+.md-breadcrumb-page {
+    display: inline-block;
+    word-wrap: break-word;
+}
