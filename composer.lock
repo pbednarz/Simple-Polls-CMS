@@ -4,8 +4,47 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9721a890e6db445543d05174b51731e1",
+    "hash": "61d66ca722964986f362d972a5ce8bdb",
     "packages": [
+        {
+            "name": "netresearch/jsonmapper",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netresearch/jsonmapper.git",
+                "reference": "6d1de35af8f26e7f7b7d71cb22d141bfc51f2cd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netresearch/jsonmapper/zipball/6d1de35af8f26e7f7b7d71cb22d141bfc51f2cd7",
+                "reference": "6d1de35af8f26e7f7b7d71cb22d141bfc51f2cd7",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.2.*",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Weiske",
+                    "email": "christian.weiske@netresearch.de",
+                    "homepage": "http://www.netresearch.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Map nested JSON structures onto PHP classes",
+            "time": "2015-03-18 09:00:03"
+        },
         {
             "name": "slim/slim",
             "version": "2.6.2",

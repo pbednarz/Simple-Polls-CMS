@@ -1,12 +1,12 @@
 <?php
 
-class Question
+class Question implements JsonSerializable
 {
 
     private $questionId;
-    private $nazwa;
+    private $text;
     private $pollId;
-    private $allowMultipleAnswers;
+    private $allow_multiple_answers;
     private $poll;
 
     public function getPoll()
@@ -24,16 +24,6 @@ class Question
         return $this->questionId;
     }
 
-    public function getNazwa()
-    {
-        return $this->nazwa;
-    }
-
-    public function getIdMarki()
-    {
-        return $this->idMarki;
-    }
-
     public function getPollId()
     {
         return $this->pollId;
@@ -41,7 +31,17 @@ class Question
 
     public function getAllowMultipleAnswers()
     {
-        return $this->allowMultipleAnswers;
+        return $this->allow_multiple_answers;
+    }
+
+    public function setAllowMultipleAnswers($allow_multiple_answers)
+    {
+        $this->allow_multiple_answers = $allow_multiple_answers;
+    }
+
+    public function setAllow_Multiple_Answers($allow_multiple_answers)
+    {
+        $this->setAllowMultipleAnswers($allow_multiple_answers);
     }
 
     public function setQuestionId($questionId)
@@ -49,19 +49,31 @@ class Question
         $this->questionId = $questionId;
     }
 
-    public function setNazwa($nazwa)
-    {
-        $this->nazwa = $nazwa;
-    }
-
     public function setPollId($pollId)
     {
         $this->pollId = $pollId;
     }
 
-    public function setAllowMultipleAnswers($allowMultipleAnswers)
+    public function getText()
     {
-        $this->allowMultipleAnswers = $allowMultipleAnswers;
+        return $this->text;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }
 
