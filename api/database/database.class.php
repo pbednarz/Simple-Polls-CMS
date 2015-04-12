@@ -8,7 +8,7 @@ Class Database
     public static function getInstance()
     {
         if (!self::$db) {
-            self::$db = new PDO('mysql:host=localhost;dbname=polls_cms;charset=utf8', 'root', '');
+            self::$db = new PDO('mysql:host=localhost;dbname=polls;charset=utf8', 'root', '');
             return new Database();
         }
     }
@@ -30,12 +30,18 @@ Class Database
         return FALSE;
     }
 
+    public static function getAdmins()
+    {
+        $stmt = self::$db->query('SELECT * FROM admin');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /** @var int $id */
     public static function getAdminByID($id)
     {
         $stmt = self::$db->prepare('SELECT * FROM admin WHERE admin_id=?');
         $stmt->execute(array($id));
-        if ($stmt->rowCount > 0) {
+        if ($stmt->rowCount() > 0) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $admin = new Admin();
@@ -63,6 +69,16 @@ Class Database
             $admin->setCreateTime($result['create_time']);
             return $admin;
         }
+    }
+
+    public static function authenticateAdminByUsernameAndPassword($username, $password)
+    {
+        $stmt = self::$db->prepare('SELECT * FROM admin WHERE username=? and password=?');
+        $stmt->execute(array($username, sha1($password)));
+        if ($stmt->rowCount() > 0) {
+            return TRUE;
+        }
+        return FALSE;
     }
 
     public static function getAdminByUsername($username)
@@ -114,7 +130,7 @@ Class Database
         return FALSE;
     }
 
-    public static function getUserList()
+    public static function getUsers()
     {
         $stmt = self::$db->query('SELECT * FROM user');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -135,7 +151,7 @@ Class Database
     {
         $stmt = self::$db->prepare('SELECT * FROM user WHERE user_id=?');
         $stmt->execute(array($id));
-        if ($stmt->rowCount > 0) {
+        if ($stmt->rowCount() > 0) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $user = new User();
@@ -253,10 +269,10 @@ Class Database
         }
     }
 
-    public static function deleteQuestion($poll_id, $id)
+    public static function deleteQuestion($id)
     {
-        $stmt = self::$db->prepare('DELETE FROM question WHERE question_id=? AND poll_id=?');
-        $stmt->execute(array($id, $poll_id));
+        $stmt = self::$db->prepare('DELETE FROM question WHERE question_id=?');
+        $stmt->execute(array($id));
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1) {
             return TRUE;
@@ -264,10 +280,10 @@ Class Database
         return FALSE;
     }
 
-    public static function getQuestionById($poll_id, $id)
+    public static function getQuestionById($id)
     {
-        $stmt = self::$db->prepare('SELECT * FROM question WHERE question_id=? AND poll_id=?');
-        $stmt->execute(array($id, $poll_id));
+        $stmt = self::$db->prepare('SELECT * FROM question WHERE question_id=?');
+        $stmt->execute(array($id));
         if ($stmt->rowCount() > 0) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
@@ -281,11 +297,35 @@ Class Database
         }
     }
 
-    public static function getQuestions($poll_id)
+    public static function getQuestionsForPoll($poll_id)
     {
         $stmt = self::$db->prepare('SELECT * FROM question q WHERE poll_id=?');
         $stmt->execute(array($poll_id));
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getQuestions()
+    {
+        $stmt = self::$db->prepare('SELECT * FROM question');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    //answers
+    public static function getAnswers()
+    {
+        $stmt = self::$db->prepare('SELECT * FROM answer');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getAnswersForQuestion($questionId)
+    {
+        $stmt = self::$db->prepare('SELECT * FROM answer WHERE question_id=?');
+        $stmt->execute(array($questionId));
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 }
 

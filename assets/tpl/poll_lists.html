@@ -2,18 +2,26 @@
     <thead>
     <tr>
         <th>ID</th>
+        <th>TYTUŁ</th>
+        <th>OPCJE</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="poll in polls">
         <td>{{poll.poll_id}}</td>
-        <td><a href="#/edit/{{poll.poll_id}}" class="btn btn-default btn-sm"><i
-                class="glyphicon glyphicon-pencil"></i></a></td>
+        <td>{{poll.title}}</td>
+        <td>
+            <md-button class="md-primary" ng-click="showAdvanced(poll)">
+                <i class="glyphicon glyphicon-pencil"></i>
+            </md-button>
+            <a href="#/delete/{{poll.poll_id}}" class="btn btn-default btn-sm"><i
+                    class="glyphicon glyphicon glyphicon-remove"></i></a>
+            <a href="#/polls/{{poll.poll_id}}" class="btn btn-default btn-sm"><i
+                    class="glyphicon glyphicon glyphicon-th"></i></a>
+        </td>
     </tr>
     </tbody>
 </table>
 
 <md-button class="md-raised md-primary" ng-href="#/add-poll">Add New Poll</md-button>
-<canvas id="doughnut" class="chart chart-doughnut" data="data"
-        labels="labels"/>
 </md-content>

@@ -1,11 +1,36 @@
 <?php
-include 'model/Poll.class.php';
-include 'model/Question.class.php';
+
+foreach (glob("model/*.php") as $filename)
+{
+    include $filename;
+}
+
+foreach (glob("impl/*.php") as $filename)
+{
+    include $filename;
+}
+
 require '../vendor/autoload.php';
 require 'database/database.class.php';
+use \Slim\Middleware\HttpBasicAuthentication\AuthenticatorInterface;
 use \Slim\Slim AS Slim;
 
+class APIAuthenticator implements AuthenticatorInterface {
+    public function authenticate($user, $pass) {
+        return Database::getInstance()->authenticateAdminByUsernameAndPassword("admin", "admin");
+    }
+}
+
 $app = new Slim();
+$app->add(new \Slim\Middleware\HttpBasicAuthentication([
+    "authenticator" => new APIAuthenticator()
+]));
+
+//USERS CRUD
+$app->get('/users/', 'getUsers');
+$app->get('/users/:id', 'getUser');
+$app->post('/users/', 'addUser');
+$app->delete('/users/:id', 'deleteUser');
 
 //POLLS CRUD
 $app->get('/polls/', 'getPolls');
@@ -15,124 +40,21 @@ $app->put('/polls/:id', 'updatePoll');
 $app->delete('/polls/:id', 'deletePoll');
 
 // POLLS/QUESTIONS CRUD
-$app->get('/polls/:poll_id/questions/', 'getQuestions');
-$app->get('/polls/:poll_id/questions/:id', 'getQuestion');
-$app->post('/polls/:poll_id/questions/', 'addQuestion');
-$app->put('/polls/:poll_id/questions/:id', 'updateQuestion');
-$app->delete('/polls/:poll_id/questions/:id', 'deleteQuestion');
+$app->get('/questions/', 'getQuestions');
+$app->get('/questions/:id', 'getQuestion');
+$app->post('/questions/', 'addQuestion');
+$app->put('/questions/:id', 'updateQuestion');
+$app->get('/polls/:poll_id/questions/', 'getQuestionsForPoll');
+
+
+// POLLS/QUESTIONS/ANSWERS CRUD
+$app->get('/polls/:poll_id/questions/:question_id/', 'getAnswersForQuestion');
+// $app->get('/polls/:poll_id/questions/:id', 'getQuestion');
+// $app->post('/polls/:poll_id/questions/', 'addQuestion');
+// $app->put('/polls/:poll_id/questions/:id', 'updateQuestion');
+// $app->delete('/polls/:poll_id/questions/:id', 'deleteQuestion');
+$app->get('/answers', 'getAnswers');
+
 
 $app->run();
-$db = Database::getInstance();
-
-// Polls
-function getPolls()
-{
-    try {
-        echo json_encode(Database::getInstance()->getPolls());
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function getPoll($id)
-{
-    try {
-        echo json_encode(Database::getInstance()->getPollById($id));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function deletePoll($id)
-{
-    try {
-        echo json_encode(Database::getInstance()->deletePoll($id));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function addPoll()
-{
-    try {
-        $request = Slim::getInstance()->request();
-        $json = json_decode($request->getBody());
-        $mapper = new JsonMapper();
-        $poll = $mapper->map($json, new Poll());
-        echo json_encode(Database::getInstance()->addPoll($poll));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function updatePoll()
-{
-    try {
-        $request = Slim::getInstance()->request();
-        $json = json_decode($request->getBody());
-        $mapper = new JsonMapper();
-        $poll = $mapper->map($json, new Poll());
-        echo json_encode(Database::getInstance()->updatePoll($poll));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-// Questions
-function getQuestion($poll_id, $id)
-{
-    try {
-        echo json_encode(Database::getInstance()->getQuestionById($poll_id, $id));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function deleteQuestion($poll_id, $id)
-{
-    try {
-        echo json_encode(Database::getInstance()->deleteQuestion($poll_id, $id));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function addQuestion($poll_id)
-{
-    try {
-        $request = Slim::getInstance()->request();
-        $json = json_decode($request->getBody());
-        $mapper = new JsonMapper();
-        $question = $mapper->map($json, new Question());
-        $question->setPollId($poll_id);
-        echo json_encode(Database::getInstance()->addQuestion($question));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function updateQuestion($poll_id, $id)
-{
-    try {
-        $request = Slim::getInstance()->request();
-        $json = json_decode($request->getBody());
-        $mapper = new JsonMapper();
-        $question = $mapper->map($json, new Question());
-        $question->setPollId($poll_id);
-        $question->setQuestionId($id);
-        echo json_encode(Database::getInstance()->updateQuestion($question));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
-function getQuestions($poll_id)
-{
-    try {
-        echo json_encode(Database::getInstance()->getQuestions($poll_id));
-    } catch (PDOException $e) {
-        echo '{"error":{"text":' . $e->getMessage() . '}}';
-    }
-}
-
 ?>

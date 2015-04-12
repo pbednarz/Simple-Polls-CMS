@@ -2,6 +2,7 @@
 <html lang="en" ng-app="PollsApp" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1"/>
     <title>Polls CMS</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
@@ -16,6 +17,7 @@
 
     <script src="assets/js/index.js"></script>
     <script src="assets/js/controllers.js"></script>
+    <script src="assets/js/poll_controller.js"></script>
     <script src="js/chart.min.js"></script>
     <script src="assets/chart/angular-chart.js"></script>
 
@@ -25,23 +27,63 @@
     <md-toolbar class="md-default-theme">
 
         <div class="md-toolbar-tools docs-toolbar-tools" ng-click="openMenu()" tabindex="-1">
-            <h2 class="md-toolbar-item md-breadcrumb">
-                <!-- ngIf: menu.currentPage.name !== menu.currentSection.name --><span
-                    ng-if="title != section" class="ng-scope">
-              <span class="md-breadcrumb-page ng-binding" ng-bind="section">Section</span>
+            <md-button class="md-icon-button" hide-gt-sm aria-label="Toggle Menu">
+                <md-icon md-svg-src="img/icons/ic_menu_24px.svg"></md-icon>
+            </md-button>
+            <div layout="row" flex class="fill-height">
+                <h1 class="md-toolbar-item md-breadcrumb">
+                    <!-- ngIf: menu.currentPage.name !== menu.currentSection.name --><span
+                        ng-repeat="section in sections"
+                        class="ng-scope">
+              <md-button  ng-href="#/polls"><span class="md-breadcrumb-page ng-binding">{{section}}</span></md-button>
               <span class="docs-menu-separator-icon">
+
 
                 <img src="img/docArrow.png" alt="" aria-hidden="false">
               </span>
             </span><!-- end ngIf: menu.currentPage.name !== menu.currentSection.name -->
-                <span class="md-breadcrumb-page ng-binding" ng-bind="title">title</span>
+                    <span class="md-breadcrumb-page ng-binding" ng-bind="title">title</span>
 
-            </h2>
+                </h1>
+            </div>
+            <span flex></span> <!-- use up the empty space -->
+            <div class="md-toolbar-item md-tools docs-tools" layout="column" layout-gt-md="row">
+                <md-button
+                        ng-href="#/demo/{{currentComponent.name}}"
+                        style="position: relative; padding-left: 30px; margin-right: 15px;">
+                    <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="
+                  height: 36px;
+                  position: absolute;
+                  left: 0px;
+                  top: -1px;
+                  margin-top: 0;"></md-icon>
+                    <span>Log in</span>
+                </md-button>
+
+                <md-button
+                        ng-href="https://github.com/pbednarz/Simple-Polls-CMS"
+                        style="position: relative; padding-left: 30px; margin-right: 15px;">
+                    <md-icon md-svg-src="img/icons/ic_launch_24px.svg" style="
+                  height: 36px;
+                  position: absolute;
+                  left: 0px;
+                  top: -1px;
+                  margin-top: 0;"></md-icon>
+                    <span>View on Github</span>
+                </md-button>
+            </div>
+
+
         </div>
 
     </md-toolbar>
-    <md-content ng-view="" md-scroll-y="" flex="" class="md-padding ng-scope md-default-theme"></md-content>
-
+    <div layout="column" class="doc-content">
+        <div flex="" layout="column" style="z-index:1">
+            <section class="demo-container md-whiteframe-z1">
+                <md-content ng-view="" md-scroll-y="" flex="" class="md-padding ng-scope md-default-theme"></md-content>
+            </section>
+        </div>
+    </div>
 </div>
 
 

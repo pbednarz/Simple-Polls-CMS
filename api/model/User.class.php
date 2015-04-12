@@ -1,6 +1,6 @@
 <?php
 
-class User
+class User implements JsonSerializable
 {
     private $id;
     private $birthDate;
@@ -71,6 +71,9 @@ class User
         $this->createDate = $createDate;
     }
 
-
+    function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }
 ?>

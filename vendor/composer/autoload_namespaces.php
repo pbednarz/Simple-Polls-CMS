@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Slim\\Middleware\\' => array($vendorDir . '/tuupola/slim-basic-auth/src'),
     'Slim' => array($vendorDir . '/slim/slim'),
     '' => array($vendorDir . '/netresearch/jsonmapper/src'),
 );

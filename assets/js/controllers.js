@@ -1,31 +1,35 @@
+//QUESTIONS
 var questionControllers = angular.module('questionControllers', ['chart.js']);
 
-questionControllers.controller('QuestionListCtrl', ['$scope', '$http', '$routeParams',
-    function ($scope, $http, $routeParams) {
+questionControllers.controller('QuestionListCtrl', ['$scope', '$rootScope', '$http', '$routeParams',
+    function ($scope, $rootScope, $http, $routeParams) {
         $http.get('api/polls/' + $routeParams.pollId + '/questions').success(function (data) {
             $scope.questions = data;
-            $scope.labels = ["Answer A", "Answer B", "Answer C", "Answer D"];
-            $scope.data = [300, 500, 100, 100];
-            $scope.chartOptions = {maintainAspectRatio: true, responsive: false}
+            $rootScope.pollId = $routeParams.pollId;
         }).
             error(function (data, status, headers, config) {
                 $scope.questions = "error";
             });
     }]);
 
+//ANSWERS
+var answerControllers = angular.module('answerControllers', ['chart.js']);
 
-var pollControllers = angular.module('pollControllers', ['chart.js']);
-
-pollControllers.controller('PollListCtrl', ['$scope', '$http', '$routeParams',
+answerControllers.controller('AnswerListCtrl', ['$scope', '$http', '$routeParams',
     function ($scope, $http, $routeParams) {
-        $http.get('api/polls').success(function (data) {
-            $scope.polls = data;
-            $scope.labels = ["Answer A", "Answer B", "Answer C", "Answer D"];
-            $scope.data = [300, 500, 100, 100];
+        $http.get('api/polls/' + $routeParams.pollId + '/questions/' + $routeParams.questionId).success(function (data) {
+            $scope.answers = data;
+            $scope.labels = [];
+            $scope.data = [];
+            $scope.pollId = $routeParams.pollId;
+            var index;
+            for (index = 0; index < data.length; index++) {
+                $scope.labels[index] = data[index].text;
+                $scope.data[index] = data[index].answer_id;
+            }
             $scope.chartOptions = {maintainAspectRatio: true, responsive: false}
         }).
             error(function (data, status, headers, config) {
-                $scope.polls = "error";
+                $scope.answers = "error";
             });
     }]);
-

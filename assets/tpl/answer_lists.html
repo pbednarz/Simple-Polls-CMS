@@ -1,0 +1,27 @@
+<table class="table table-condensed">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Text</th>
+        <th>Ilość odpowiedzi</th>
+        <th>OPCJE</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="answer in answers">
+        <td>{{answer.answer_id}}</td>
+        <td>{{answer.text}}</td>
+        <td>
+
+        <td><a href="#/edit/{{question.question_id}}" class="btn btn-default btn-sm"><i
+                class="glyphicon glyphicon-pencil"></i></a></td>
+    </tr>
+    </tbody>
+</table>
+
+<md-button class="md-raised md-primary" ng-href="#/add-answer">Add New Answer</md-button>
+<canvas id="doughnut" class="chart chart-pie" data="data" options="chartOptions" width="871" height="376" style="width: 871px; height: 376px;display: block;
+        margin-left: auto;
+        margin-right: auto;"
+        labels="labels"></canvas>
+</md-content>

@@ -1,0 +1,25 @@
+<md-dialog aria-label="Poll">
+    <md-content class="sticky-container">
+        <md-subheader class="md-sticky-no-effect" >ID : {{dialog.poll.poll_id}}</md-subheader>
+        <div class="dialog-content">
+            <form name="pollForm">
+                <md-input-container>
+                    <label>Tytuł</label>
+                    <input required name="title" ng-model="dialog.poll.title">
+                    <div ng-messages="pollForm.title.$error">
+                        <div ng-message="required">Pole wymagane.</div>
+                    </div>
+                </md-input-container>
+            </form>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button ng-click="cancel()">
+            Anuluj
+        </md-button>
+        <md-button ng-click="update(dialog.poll)" class="md-primary">
+            Gotowe
+        </md-button>
+    </div>
+</md-dialog>
