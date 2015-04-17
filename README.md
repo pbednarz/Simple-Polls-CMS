@@ -1,2 +1,2 @@
 ### ERD Diagram
-![polls_erd](/database/diagram.png "ERD Diagram")
+![polls_erd](/api/database/diagram.png "ERD Diagram")
