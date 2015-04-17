@@ -5,20 +5,20 @@ require_once './SessionHandler.class.php';
 use \Slim\Middleware\HttpBasicAuthentication\AuthenticatorInterface;
 use \Slim\Slim AS Slim;
 
-foreach (glob("model/*.php") as $filename)
-{
+foreach (glob("model/*.php") as $filename) {
     include_once $filename;
 }
 
-class APIAuthenticator implements AuthenticatorInterface {
-    public function authenticate($user, $pass) {
-        return Database::getInstance()->authenticateAdminByUsernameOrEmailAndPassword("admin", "admin");
+class APIAuthenticator implements AuthenticatorInterface
+{
+    public function authenticate($user, $pass)
+    {
+        return Database::getInstance()->authenticateAdminByUsernameOrEmailAndPassword($user, $pass);
     }
 }
 
 $app = new Slim();
-foreach (glob("impl/*.php") as $filename)
-{
+foreach (glob("impl/*.php") as $filename) {
     require_once $filename;
 }
 
@@ -26,7 +26,8 @@ $app->add(new \Slim\Middleware\HttpBasicAuthentication([
     "authenticator" => new APIAuthenticator()
 ]));
 
-function verifyRequiredParams($required_fields,$request_params) {
+function verifyRequiredParams($required_fields, $request_params)
+{
     $error = false;
     $error_fields = "";
     foreach ($required_fields as $field) {
@@ -46,7 +47,8 @@ function verifyRequiredParams($required_fields,$request_params) {
     }
 }
 
-function echoResponse($status_code, $response) {
+function echoResponse($status_code, $response)
+{
     $app = \Slim\Slim::getInstance();
     // Http response code
     $app->status($status_code);
@@ -56,5 +58,6 @@ function echoResponse($status_code, $response) {
 
     echo json_encode($response);
 }
+
 $app->run();
 ?>

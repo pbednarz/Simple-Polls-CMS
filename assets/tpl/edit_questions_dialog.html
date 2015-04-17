@@ -1,0 +1,41 @@
+<md-dialog aria-label="Question" style="width: 400px;" class="md-padding">
+    <form name="questionForm" ng-Submit="update(dialog.question)">
+
+        <md-content class="md-default-theme" role="document" tabindex="0">
+            <div ng-if="dialog.question.questionId == null">
+                <h2 class="md-title ng-binding">Nowe pytanie:</h2>
+            </div>
+            <div ng-if="dialog.question.questionId > 0">
+                <h2 class="md-title ng-binding">Edycja pytania: <span ng-bind="dialog.question.questionId"></span></h2>
+            </div>
+            <div class="dialog-content">
+                <md-input-container>
+                    <label>Treść pytania</label>
+                    <input required md-maxlength="255" maxlength="255" name="text" ng-model="dialog.question.text"
+                           required>
+
+                    <div ng-messages="questionForm.text.$error">
+                        <div ng-message="required">Pole wymagane.</div>
+                        <div ng-message="md-maxlength">Maksymalna długość pytania to 255 znaków.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <div layout="row" layout-align="start center">
+                        <span>Pozwalaj na wielokrotny wybór</span>
+                        <md-switch ng-true-value="'1'" ng-checked="dialog.question.allowMultipleAnswers == 1"
+                                   ng-model="dialog.question.allowMultipleAnswers"
+                                   ng-ng-binding="dialog.question.allowMultipleAnswers"
+                                   ng-false-value="'0'"
+                                   aria-label="WIELOKROTNY WYBÓR"></md-switch>
+                    </div>
+                </md-input-container>
+            </div>
+        </md-content>
+
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">Anuluj</md-button>
+            <md-button type="submit" class="md-primary">Gotowe</md-button>
+        </div>
+    </form>
+</md-dialog>

@@ -163,7 +163,7 @@ class JsonMapperTest extends \PHPUnit_Framework_TestCase
             new JsonMapperTest_Simple()
         );
         $this->assertInternalType('object', $sn->notype);
-        $this->assertEquals((object) array('k' => 'v'), $sn->notype);
+        $this->assertEquals((object)array('k' => 'v'), $sn->notype);
     }
 
     /**
@@ -500,7 +500,7 @@ class JsonMapperTest extends \PHPUnit_Framework_TestCase
         $logger = new JsonMapperTest_Logger();
         $jm->setLogger($logger);
 
-        $json   = '{"privateProperty" : 1}';
+        $json = '{"privateProperty" : 1}';
         $result = $jm->map(json_decode($json), new PrivateWithSetter());
 
         $this->assertEquals(1, $result->getPrivateProperty());
@@ -518,7 +518,7 @@ class JsonMapperTest extends \PHPUnit_Framework_TestCase
         $logger = new JsonMapperTest_Logger();
         $jm->setLogger($logger);
 
-        $json   = '{"privateNoSetter" : 1}';
+        $json = '{"privateNoSetter" : 1}';
         $result = $jm->map(json_decode($json), new PrivateWithSetter());
 
         $this->assertEquals(1, $result->getPrivateProperty());
@@ -536,8 +536,9 @@ class JsonMapperTest extends \PHPUnit_Framework_TestCase
         $logger = new JsonMapperTest_Logger();
         $jm->setLogger($logger);
 
-        $json   = '{"privatePropertyPrivateSetter" : 1}';
+        $json = '{"privatePropertyPrivateSetter" : 1}';
         $result = $jm->map(json_decode($json), new PrivateWithSetter());
     }
 }
+
 ?>

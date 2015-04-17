@@ -15,28 +15,27 @@ final class SessionHander
      */
     public static function getInstance()
     {
-        if( self::$oInstance == false )
-        {
+        if (self::$oInstance == false) {
             self::$oInstance = new SessionHander();
         }
         return self::$oInstance;
     }
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
-    public static function getSession(){
+    public static function getSession()
+    {
         if (!isset($_SESSION)) {
             session_start();
         }
         $sess = array();
-        if(isset($_SESSION['uid']))
-        {
+        if (isset($_SESSION['uid'])) {
             $sess["uid"] = $_SESSION['uid'];
             $sess["username"] = $_SESSION['username'];
             $sess["email"] = $_SESSION['email'];
-        }
-        else
-        {
+        } else {
             $sess["uid"] = '';
             $sess["username"] = 'Guest';
             $sess["email"] = '';
@@ -44,27 +43,25 @@ final class SessionHander
         return $sess;
     }
 
-    public function destroySession(){
+    public function destroySession()
+    {
         if (!isset($_SESSION)) {
             session_start();
         }
-        if(isSet($_SESSION['uid']))
-        {
+        if (isSet($_SESSION['uid'])) {
             unset($_SESSION['uid']);
             unset($_SESSION['username']);
             unset($_SESSION['email']);
-            $info='info';
-            if(isSet($_COOKIE[$info]))
-            {
-                setcookie ($info, '', time() - $cookie_time);
+            $info = 'info';
+            if (isSet($_COOKIE[$info])) {
+                setcookie($info, '', time() - $cookie_time);
             }
-            $msg="Logged Out Successfully...";
-        }
-        else
-        {
-            $msg = "Not logged in...";
+            $msg = "Wylogowany poprawnie...";
+        } else {
+            $msg = "Użytkownik niezalogowany...";
         }
         return $msg;
     }
 }
+
 ?>

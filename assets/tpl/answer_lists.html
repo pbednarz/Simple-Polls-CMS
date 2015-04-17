@@ -1,26 +1,42 @@
-<table class="table table-condensed">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Text</th>
-        <th>Ilość odpowiedzi</th>
-        <th>OPCJE</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="answer in answers">
-        <td>{{answer.answer_id}}</td>
-        <td>{{answer.text}}</td>
-        <td>
-
-        <td><a href="#/edit/{{question.question_id}}" class="btn btn-default btn-sm"><i
-                class="glyphicon glyphicon-pencil"></i></a></td>
-    </tr>
-    </tbody>
-</table>
-
-<md-button class="md-raised md-primary" ng-href="#/add-answer">Add New Answer</md-button>
-<canvas id="doughnut" class="chart chart-pie" data="data" options="chartOptions" width="871" height="376" style="width: 871px; height: 376px;display: block;
+<md-content class="md-padding  md-whiteframe-z2">
+    <div layout="row" layout-align="center center" class="md-padding">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>TREŚĆ</th>
+                <th>ILOŚĆ ODPOWIEDZI</th>
+                <th>OPCJE</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="answer in ::answers">
+                <td style="width:10%;"><span ng-bind="::answer.answerId"></span></td>
+                <td style="width:60%;"><span ng-bind="::answer.text"></span></td>
+                <td style="width:20%;" ng-bind="::answer.answerId*3"></span></td>
+                <td>
+                    <md-button class="md-primary" aria-label="Edit Poll" ng-click="editAnswer(answer)">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </md-button>
+                    <md-button class="md-primary" aria-label="Delete Poll" ng-click="deleteAnswer(answer)">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </md-button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div flex/>
+    <div layout="row" layout-align="end center">
+        <md-button class="md-fab md-primary" aria-label="Add new Answer" ng-click="editAnswer({})">
+            <md-icon md-svg-src="img/icons/plus.svg"></md-icon>
+        </md-button>
+    </div>
+    <div layout="row" layout-align="center center">
+        <canvas id="doughnut" class="chart chart-pie" data="data" options="chartOptions" width="871" height="376"
+                style="width: 671px; height: 376px;display: block;
         margin-left: auto;
         margin-right: auto;"
-        labels="labels"></canvas>
+                labels="labels"></canvas>
+    </div>
+</md-content>

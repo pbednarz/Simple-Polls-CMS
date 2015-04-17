@@ -1,23 +1,46 @@
-<table class="table table-condensed">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Text</th>
-        <th>Allow multiple choices</th>
-        <th>OPCJE</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="question in questions">
-        <td>{{question.question_id}}</td>
-        <td>{{question.text}}</td>
-        <td>
-            <md-switch ng-true-value="1" ng-checked="question.allow_multiple_answers == 1" ng-false-value="0" ="question.allow_multiple_answers" aria-label="Switch 1"></md-switch>
-        </td>
-        <td><a href="#/edit/{{question.question_id}}" class="btn btn-default btn-sm"><i
-                class="glyphicon glyphicon-pencil"></i></a></td>
-    </tr>
-    </tbody>
-</table>
+<md-content class="md-padding  md-whiteframe-z2">
+    <div layout="row" layout-align="center center" class="md-padding">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>PYTANIE</th>
+                <th>WIELOKROTNY WYBÓR</th>
+                <th>OPCJE</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="question in ::questions">
+                <td style="width:10%;"><span ng-bind="::question.questionId"></span></td>
+                <td style="width:50%;"><span ng-bind="::question.text"></span>
 
-<md-button class="md-raised md-primary" ng-href="#/add-question">Add New Question</md-button>
+                    <div flex/>
+                </td>
+                <td style="width:20%;">
+                    <md-checkbox ng-disabled="true" style="margin: 0px;" ng-model="question.allowMultipleAnswers"
+                                 aria-label="typ" ng-true-value="'1'" ng-false-value="'0'">
+                    </md-checkbox>
+                </td>
+                <td>
+                    <md-button class="md-primary" aria-label="Edytuj pytanie" ng-click="editQuestion(question)">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </md-button>
+                    <md-button class="md-primary" aria-label="Usuń pytanie" ng-click="deleteQuestion(question)">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </md-button>
+                    <md-button class="md-primary" aria-label="Odpowiedzi"
+                               ng-href="#/polls/{{question.pollId}}/questions/{{question.questionId}}">
+                        <i class="glyphicon glyphicon-th"></i>
+                    </md-button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div flex/>
+    <div layout="row" layout-align="end center">
+        <md-button class="md-fab md-primary" aria-label="Dodaj pytanie" ng-click="editQuestion({})">
+            <md-icon md-svg-src="img/icons/plus.svg"></md-icon>
+        </md-button>
+    </div>
+</md-content>

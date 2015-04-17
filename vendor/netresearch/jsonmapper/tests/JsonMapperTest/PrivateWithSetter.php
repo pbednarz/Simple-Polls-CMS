@@ -47,4 +47,5 @@ class PrivateWithSetter
         return $this->privateProperty;
     }
 }
+
 ?>

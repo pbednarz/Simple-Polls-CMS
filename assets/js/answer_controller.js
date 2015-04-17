@@ -1,30 +1,34 @@
-//POLLS
-var pollControllers = angular.module('pollControllers', ['chart.js', 'ngMessages']);
+//ANSWERS
+var answerControllers = angular.module('answerControllers', ['chart.js', 'ngMessages']);
 
-pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$mdDialog', '$routeParams', '$route',
+answerControllers.controller('AnswerListCtrl', ['$scope', '$location', '$http', '$mdDialog', '$routeParams', '$route',
     function ($scope, $location, $http, $mdDialog, $routeParams, $route) {
-        $http.get('api/polls').success(function (data) {
-            $scope.polls = data;
+        $http.get('api/polls/' + $routeParams.pollId + '/questions/' + $routeParams.questionId).success(function (data) {
+            $scope.answers = data;
+            $scope.labels = [];
+            $scope.data = [];
+            $scope.pollId = $routeParams.pollId;
+            var index;
+            for (index = 0; index < data.length; index++) {
+                $scope.labels[index] = data[index].text;
+                $scope.data[index] = data[index].answerId * 3;
+            }
+            $scope.chartOptions = {maintainAspectRatio: true, responsive: false}
         }).
             error(function (data, status, headers, config) {
-                $scope.polls = "error";
+                $scope.answers = "error";
             });
 
 
-        $scope.details = function (poll) {
-            $location.path('/polls/' + poll.pollId);
-            $location.replace();
-        };
-
-        $scope.deletePoll = function (poll) {
+        $scope.deleteAnswer = function (answer) {
             var confirm = $mdDialog.confirm()
-                .title('Czy chcesz usunąć ankietę?')
-                .content(poll.title)
-                .ariaLabel('Poll delete')
+                .title('Czy chcesz usunąć odpowiedź?')
+                .content(answer.text)
+                .ariaLabel('Answer delete')
                 .ok('Usuń')
                 .cancel('Anuluj');
             $mdDialog.show(confirm).then(function () {
-                $http.delete('api/polls/' + poll.pollId)
+                $http.delete('api/answers/' + answer.answerId)
                     .success(function (data) {
                         $route.reload();
                     })
@@ -35,18 +39,17 @@ pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$md
             });
         };
 
-        $scope.editPoll = function (poll) {
+        $scope.editAnswer = function (answer) {
             $mdDialog.show({
                 controller: DialogController,
                 controllerAs: 'dialog',
                 bindToController: true,
-                templateUrl: './assets/tpl/edit_polls_dialog.html',
+                templateUrl: './assets/tpl/edit_answers_dialog.html',
                 locals: {
-                    poll: poll
+                    answer: answer
                 }
             })
-                .then(function (poll) {
-
+                .then(function (answer) {
                 });
         };
 
@@ -58,8 +61,8 @@ pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$md
                 $mdDialog.cancel();
             };
             $scope.update = function (data) {
-                if (data.pollId == null) {
-                    $http.post('api/polls/', data)
+                if (data.answerId == null) {
+                    $http.post('api/polls/' + $routeParams.pollId + '/questions/' + $routeParams.questionId, data)
                         .success(function (data) {
                             $route.reload();
                             $mdDialog.hide(data);
@@ -68,7 +71,7 @@ pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$md
                             alert("Error");
                         });
                 } else {
-                    $http.put('api/polls/' + data.pollId, data)
+                    $http.put('api/answers/' + data.answerId, data)
                         .success(function (data) {
                             $route.reload();
                             $mdDialog.hide(data);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -29,7 +30,6 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class RouterTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -48,7 +48,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testMap()
     {
         $router = new \Slim\Router();
-        $route = new \Slim\Route('/foo', function() {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $router->map($route);
 
         $this->assertAttributeContains($route, 'routes', $router);
@@ -60,13 +61,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testAddNamedRoute()
     {
         $router = new \Slim\Router();
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $router->addNamedRoute('foo', $route);
 
         $property = new \ReflectionProperty($router, 'namedRoutes');
         $property->setAccessible(true);
 
-		$rV = $property->getValue($router);
+        $rV = $property->getValue($router);
         $this->assertSame($route, $rV['foo']);
     }
 
@@ -78,7 +80,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('RuntimeException');
 
         $router = new \Slim\Router();
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
         $router->addNamedRoute('foo', $route);
         $router->addNamedRoute('foo', $route);
     }
@@ -89,7 +92,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testGetNamedRoute()
     {
         $router = new \Slim\Router();
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($router, 'namedRoutes');
         $property->setAccessible(true);
@@ -105,8 +109,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testGetNamedRoutes()
     {
         $router = new \Slim\Router();
-        $route1 = new \Slim\Route('/foo', function () {});
-        $route2 = new \Slim\Route('/bar', function () {});
+        $route1 = new \Slim\Route('/foo', function () {
+        });
+        $route2 = new \Slim\Route('/bar', function () {
+        });
 
         // Init router routes to array
         $propertyRouterRoutes = new \ReflectionProperty($router, 'routes');
@@ -134,7 +140,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testHasNamedRoute()
     {
         $router = new \Slim\Router();
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($router, 'namedRoutes');
         $property->setAccessible(true);
@@ -150,7 +157,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testGetCurrentRoute()
     {
         $router = new \Slim\Router();
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $property = new \ReflectionProperty($router, 'currentRoute');
         $property->setAccessible(true);
@@ -165,7 +173,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testGetCurrentRouteIfMatchedRoutes()
     {
         $router = new \Slim\Router();
-        $route = new \Slim\Route('/foo', function () {});
+        $route = new \Slim\Route('/foo', function () {
+        });
 
         $propertyMatchedRoutes = new \ReflectionProperty($router, 'matchedRoutes');
         $propertyMatchedRoutes->setAccessible(true);
@@ -200,14 +209,17 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         $router = new \Slim\Router();
 
-        $route1 = new \Slim\Route('/foo', function () {});
-		$route1 = $route1->via('GET');
+        $route1 = new \Slim\Route('/foo', function () {
+        });
+        $route1 = $route1->via('GET');
 
-        $route2 = new \Slim\Route('/foo', function () {});
-		$route2 = $route2->via('POST');
+        $route2 = new \Slim\Route('/foo', function () {
+        });
+        $route2 = $route2->via('POST');
 
-        $route3 = new \Slim\Route('/bar', function () {});
-		$route3 = $route3->via('PUT');
+        $route3 = new \Slim\Route('/bar', function () {
+        });
+        $route3 = $route3->via('PUT');
 
         $routes = new \ReflectionProperty($router, 'routes');
         $routes->setAccessible(true);
@@ -223,10 +235,12 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         $router = new \Slim\Router();
 
-        $route1 = new \Slim\Route('/hello/:first/:last', function () {});
+        $route1 = new \Slim\Route('/hello/:first/:last', function () {
+        });
         $route1 = $route1->via('GET')->name('hello');
 
-        $route2 = new \Slim\Route('/path/(:foo\.:bar)', function () {});
+        $route2 = new \Slim\Route('/path/(:foo\.:bar)', function () {
+        });
         $route2 = $route2->via('GET')->name('regexRoute');
 
         $routes = new \ReflectionProperty($router, 'namedRoutes');

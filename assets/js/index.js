@@ -1,29 +1,38 @@
-var app = angular.module('PollsApp', ['ngMaterial', 'ngRoute', 'authCtrl', 'questionControllers', 'pollControllers', 'ngAnimate', 'answerControllers']);
-app.config(['$routeProvider','$locationProvider',
+var app = angular.module('PollsApp', ['ngMaterial', 'toaster', 'ngRoute', 'questionControllers', 'pollControllers', 'ngAnimate', 'answerControllers']);
+
+app.config(['$routeProvider', '$locationProvider',
     function ($routeProvider, $locationProvider) {
         $routeProvider.
-            when('/polls', {
+            when('/login', {
+                title: 'Login',
+                templateUrl: './assets/tpl/login.html',
+                controller: 'authCtrl'
+            })
+            .when('/logout', {
+                title: 'Login',
+                templateUrl: './assets/tpl/login.html',
+                controller: 'authCtrl'
+            })
+            .when('/polls', {
                 templateUrl: './assets/tpl/poll_lists.html',
                 controller: 'PollListCtrl',
-                title: "Polls"
-            }).
-            when('/polls/:pollId', {
+                title: "Ankiety"
+            })
+            .when('/polls/:pollId', {
                 templateUrl: './assets/tpl/question_lists.html',
                 controller: 'QuestionListCtrl',
-                title: "Questions"
-            }).
-            when('/polls/:pollId/questions/:questionId', {
+                title: "Pytania"
+            })
+            .when('/polls/:pollId/questions/:questionId', {
                 templateUrl: './assets/tpl/answer_lists.html',
                 controller: 'AnswerListCtrl',
-                title: "Answers"
-            }).
-            otherwise({
+                title: "Odpowiedzi"
+            })
+            .otherwise({
                 redirectTo: '/polls'
             });
 
-    }]);
-
-app.run(['$location', '$rootScope', '$route', function($location, $rootScope, $route) {
+    }]).run(['$location', '$rootScope', '$route', 'Data', function ($location, $rootScope, $route, Data) {
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
         $rootScope.title = current.$$route.title;
         $rootScope.pollId = current.params.pollId;
@@ -47,15 +56,30 @@ app.run(['$location', '$rootScope', '$route', function($location, $rootScope, $r
         });
     });
 
-    $rootScope.reloadRoute = function() {
+    $rootScope.reloadRoute = function () {
         $route.reload();
+    };
+
+    $rootScope.login = {};
+    $rootScope.logout = function () {
+        Data.get('logout').then(function (results) {
+            Data.toast(results);
+            $location.path('logout');
+        });
+    };
+
+    $rootScope.goGithub = function () {
+        $window.open('//github.com/pbednarz/Simple-Polls-CMS');
     }
 }]);
 
-app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location, $http, Data) {
-    //initially set those objects to null to avoid undefined error
-    $scope.login = {};
-    $scope.signup = {};
+app.directive('focus', function () {
+    return function (scope, element) {
+        element[0].focus();
+    }
+});
+
+app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $window, $location, $http, Data) {
     $scope.doLogin = function (admin) {
         Data.post('login', {
             username: admin.username,
@@ -63,20 +87,18 @@ app.controller('authCtrl', function ($scope, $rootScope, $routeParams, $location
         }).then(function (results) {
             Data.toast(results);
             if (results.status == "success") {
-                $location.path('dashboard');
+                $location.path('/polls');
             }
         });
     };
-    $scope.logout = function () {
-        Data.get('logout').then(function (results) {
-            Data.toast(results);
-            $location.path('login');
-        });
-    }
 });
 
-app.directive('focus', function() {
-    return function(scope, element) {
-        element[0].focus();
-    }
+app.config(function ($mdThemingProvider) {
+    // Configure a dark theme with primary foreground yellow
+    $mdThemingProvider.theme('docs-dark', 'default')
+        .dark();
+});
+
+app.run(function ($http) {
+    $http.defaults.headers.common.Authorization = 'Basic YWRtaW46YWRtaW4='
 });

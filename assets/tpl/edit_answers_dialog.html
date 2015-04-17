@@ -1,0 +1,31 @@
+<md-dialog aria-label="Answer" style="width: 400px;" class="md-padding">
+    <form name="answerForm" ng-Submit="update(dialog.answer)">
+
+        <md-content class="md-default-theme" role="document" tabindex="0">
+            <div ng-if="dialog.answer.answerId == null">
+                <h2 class="md-title ng-binding">Nowa odpowiedź:</h2>
+            </div>
+            <div ng-if="dialog.answer.answerId > 0">
+                <h2 class="md-title ng-binding">Edycja odpowiedzi: <span ng-bind="dialog.answer.answerId"></span></h2>
+            </div>
+            <div class="dialog-content">
+                <md-input-container>
+                    <label>Treść odpowiedzi</label>
+                    <input required md-maxlength="255" maxlength="255" name="text" ng-model="dialog.answer.text"
+                           required>
+
+                    <div ng-messages="answerForm.text.$error">
+                        <div ng-message="required">Pole wymagane.</div>
+                        <div ng-message="md-maxlength">Maksymalna długość odpowiedzi to 255 znaków.</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </md-content>
+
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">Anuluj</md-button>
+            <md-button type="submit" class="md-primary">Gotowe</md-button>
+        </div>
+    </form>
+</md-dialog>

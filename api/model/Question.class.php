@@ -6,7 +6,7 @@ class Question implements JsonSerializable
     private $questionId;
     private $text;
     private $pollId;
-    private $allow_multiple_answers;
+    private $allowMultipleAnswers;
     private $poll;
 
     public function getPoll()
@@ -31,17 +31,12 @@ class Question implements JsonSerializable
 
     public function getAllowMultipleAnswers()
     {
-        return $this->allow_multiple_answers;
+        return $this->allowMultipleAnswers;
     }
 
-    public function setAllowMultipleAnswers($allow_multiple_answers)
+    public function setAllowMultipleAnswers($allowMultipleAnswers)
     {
-        $this->allow_multiple_answers = $allow_multiple_answers;
-    }
-
-    public function setAllow_Multiple_Answers($allow_multiple_answers)
-    {
-        $this->setAllowMultipleAnswers($allow_multiple_answers);
+        $this->allowMultipleAnswers = $allowMultipleAnswers;
     }
 
     public function setQuestionId($questionId)

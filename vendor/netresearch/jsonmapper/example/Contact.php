@@ -1,4 +1,5 @@
 <?php
+
 class Contact
 {
     public $name;
@@ -8,4 +9,5 @@ class Contact
      */
     public $address;
 }
+
 ?>

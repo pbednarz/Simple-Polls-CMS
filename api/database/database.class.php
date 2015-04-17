@@ -41,17 +41,17 @@ Class Database
     /** @var int $id */
     public static function getAdminByID($id)
     {
-        $stmt = self::$db->prepare('SELECT * FROM admin WHERE admin_id=?');
+        $stmt = self::$db->prepare('SELECT * FROM admin WHERE adminId=?');
         $stmt->execute(array($id));
         if ($stmt->rowCount() > 0) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $admin = new Admin();
-            $admin->setId($result['admin_id']);
+            $admin->setId($result['adminId']);
             $admin->setUsername($result['username']);
             $admin->setPassword($result['password']);
             $admin->setEmail($result['email']);
-            $admin->setCreateTime($result['create_time']);
+            $admin->setCreateTime($result['createTime']);
             return $admin;
         }
     }
@@ -64,11 +64,11 @@ Class Database
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $admin = new Admin();
-            $admin->setId($result['admin_id']);
+            $admin->setId($result['adminId']);
             $admin->setUsername($result['username']);
             $admin->setPassword($result['password']);
             $admin->setEmail($result['email']);
-            $admin->setCreateTime($result['create_time']);
+            $admin->setCreateTime($result['createTime']);
             return $admin;
         }
     }
@@ -91,11 +91,11 @@ Class Database
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $admin = new Admin();
-            $admin->setId($result['admin_id']);
+            $admin->setId($result['adminId']);
             $admin->setUsername($result['username']);
             $admin->setPassword($result['password']);
             $admin->setEmail($result['email']);
-            $admin->setCreateTime($result['create_time']);
+            $admin->setCreateTime($result['createTime']);
             return $admin;
         }
     }
@@ -108,11 +108,11 @@ Class Database
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $admin = new Admin();
-            $admin->setId($result['admin_id']);
+            $admin->setId($result['adminId']);
             $admin->setUsername($result['username']);
             $admin->setPassword($result['password']);
             $admin->setEmail($result['email']);
-            $admin->setCreateTime($result['create_time']);
+            $admin->setCreateTime($result['createTime']);
             return $admin;
         }
     }
@@ -120,10 +120,10 @@ Class Database
     /** @var User $user */
     public static function addUser($user)
     {
-        $stmt = self::$db->prepare("INSERT INTO user(birth_date, sex) "
-            . "VALUES(:birth_date,:sex)");
+        $stmt = self::$db->prepare("INSERT INTO user(birthDate, sex) "
+            . "VALUES(:birthDate,:sex)");
         $stmt->execute(array(
-                ':birth_date' => $user->getBirthDate(), ':sex' => $user->getSex())
+                ':birthDate' => $user->getBirthDate(), ':sex' => $user->getSex())
         );
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1) {
@@ -140,7 +140,7 @@ Class Database
 
     public static function deleteUser($id)
     {
-        $stmt = self::$db->prepare('DELETE FROM user WHERE user_id=?');
+        $stmt = self::$db->prepare('DELETE FROM user WHERE userId=?');
         $stmt->execute(array($id));
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1) {
@@ -151,16 +151,16 @@ Class Database
 
     public static function getUserByID($id)
     {
-        $stmt = self::$db->prepare('SELECT * FROM user WHERE user_id=?');
+        $stmt = self::$db->prepare('SELECT * FROM user WHERE userId=?');
         $stmt->execute(array($id));
         if ($stmt->rowCount() > 0) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $user = new User();
-            $user->setId($result['user_id']);
-            $user->setBirthDate($result['birth_date']);
+            $user->setId($result['userId']);
+            $user->setBirthDate($result['birthDate']);
             $user->setSex($result['sex']);
-            $user->setCreateDate($result['create_date']);
+            $user->setCreateDate($result['createDate']);
             return $user;
         }
     }
@@ -186,7 +186,7 @@ Class Database
 
     public static function deletePoll($id)
     {
-        $stmt = self::$db->prepare('DELETE FROM poll WHERE poll_id=?');
+        $stmt = self::$db->prepare('DELETE FROM poll WHERE pollId=?');
         $stmt->execute(array($id));
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1) {
@@ -197,15 +197,15 @@ Class Database
 
     public static function getPollById($id)
     {
-        $stmt = self::$db->prepare('SELECT * FROM poll WHERE poll_id=?');
+        $stmt = self::$db->prepare('SELECT * FROM poll WHERE pollId=?');
         $stmt->execute(array($id));
         if ($stmt->rowCount() > 0) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $poll = new Poll();
-            $poll->setPollId($result['poll_id']);
+            $poll->setPollId($result['pollId']);
             $poll->setTitle($result['title']);
-            $poll->setCreateDate($result['create_date']);
+            $poll->setCreateDate($result['createDate']);
             return $poll;
         }
     }
@@ -213,13 +213,23 @@ Class Database
     /** @var Poll $poll */
     public static function updatePoll($poll)
     {
-        $stmt = self::$db->prepare('UPDATE poll set title=? WHERE poll_id=?');
-        $stmt->execute(array($poll->getTitle(), $poll->getPollId()));
-        $affected_rows = $stmt->rowCount();
-        if ($affected_rows == 1) {
-            return TRUE;
+        try {
+            self::$db->beginTransaction();
+            $stmt = self::$db->prepare('UPDATE poll set title=:text'
+                . ' WHERE pollId=:pollId');
+            $stmt->execute(array(
+                ':pollId' => $poll->getPollId(),
+                ':text' => $poll->getTitle()
+            ));
+            $affected_rows = $stmt->rowCount();
+            if ($affected_rows == 1) {
+                self::$db->commit();
+                return TRUE;
+            }
+        } catch (Exception $ex) {
+            self::$db->rollBack();
+            return FALSE;
         }
-        return FALSE;
     }
 
     public static function getPolls()
@@ -232,12 +242,12 @@ Class Database
     /** @var Question $question */
     public static function addQuestion($question)
     {
-        $stmt = self::$db->prepare("INSERT INTO question(poll_id, text, allow_multiple_answers) "
-            . "VALUES(:poll_id,:text,:allow_multiple_answers)");
+        $stmt = self::$db->prepare("INSERT INTO question(pollId, text, allowMultipleAnswers) "
+            . "VALUES(:pollId,:text,:allowMultipleAnswers)");
         $stmt->execute(array(
-                ':poll_id' => $question->getPollId(),
+                ':pollId' => $question->getPollId(),
                 ':text' => $question->getText(),
-                ':allow_multiple_answers' => $question->getAllowMultipleAnswers())
+                ':allowMultipleAnswers' => $question->getAllowMultipleAnswers())
         );
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1) {
@@ -251,12 +261,12 @@ Class Database
     {
         try {
             self::$db->beginTransaction();
-            $stmt = self::$db->prepare('UPDATE question set text=:text, allow_multiple_answers=:allow_multiple_answers '
-                . ' WHERE question_id=:question_id');
+            $stmt = self::$db->prepare('UPDATE question set text=:text, allowMultipleAnswers=:allowMultipleAnswers '
+                . ' WHERE questionId=:questionId');
             $stmt->execute(array(
-                ':question_id' => $question->getQuestionId(),
+                ':questionId' => $question->getQuestionId(),
                 ':text' => $question->getText(),
-                ':allow_multiple_answers' => $question->getAllowMultipleAnswers(),
+                ':allowMultipleAnswers' => $question->getAllowMultipleAnswers(),
             ));
 
             $affected_rows = $stmt->rowCount();
@@ -273,7 +283,7 @@ Class Database
 
     public static function deleteQuestion($id)
     {
-        $stmt = self::$db->prepare('DELETE FROM question WHERE question_id=?');
+        $stmt = self::$db->prepare('DELETE FROM question WHERE questionId=?');
         $stmt->execute(array($id));
         $affected_rows = $stmt->rowCount();
         if ($affected_rows == 1) {
@@ -284,25 +294,25 @@ Class Database
 
     public static function getQuestionById($id)
     {
-        $stmt = self::$db->prepare('SELECT * FROM question WHERE question_id=?');
+        $stmt = self::$db->prepare('SELECT * FROM question WHERE questionId=?');
         $stmt->execute(array($id));
         if ($stmt->rowCount() > 0) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
             $question = new Question();
-            $question->setQuestionId($result['question_id']);
-            $question->setPollId($result['poll_id']);
-            $question->setPoll(self::getPollById($result['poll_id']));
+            $question->setQuestionId($result['questionId']);
+            $question->setPollId($result['pollId']);
+            $question->setPoll(self::getPollById($result['pollId']));
             $question->setText($result['text']);
-            $question->setAllowMultipleAnswers($result['allow_multiple_answers']);
+            $question->setAllowMultipleAnswers($result['allowMultipleAnswers']);
             return $question;
         }
     }
 
-    public static function getQuestionsForPoll($poll_id)
+    public static function getQuestionsForPoll($pollId)
     {
-        $stmt = self::$db->prepare('SELECT * FROM question q WHERE poll_id=?');
-        $stmt->execute(array($poll_id));
+        $stmt = self::$db->prepare('SELECT * FROM question q WHERE pollId=?');
+        $stmt->execute(array($pollId));
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -323,10 +333,60 @@ Class Database
 
     public static function getAnswersForQuestion($questionId)
     {
-        $stmt = self::$db->prepare('SELECT * FROM answer WHERE question_id=?');
+        $stmt = self::$db->prepare('SELECT * FROM answer WHERE questionId=?');
         $stmt->execute(array($questionId));
         if ($stmt->rowCount() > 0) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    /** @var Answer $answer */
+    public static function addAnswer($answer)
+    {
+        $stmt = self::$db->prepare("INSERT INTO answer(questionId, pollId, text) "
+            . "VALUES(:questionId,:pollId,:text)");
+        $stmt->execute(array(
+                ':questionId' => $answer->getQuestionId(), ':pollId' => $answer->getPollId(), ':text' => $answer->getText())
+        );
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows == 1) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    public static function deleteAnswer($id)
+    {
+        $stmt = self::$db->prepare('DELETE FROM answer WHERE answerId=?');
+        $stmt->execute(array($id));
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows == 1) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    /** @var Answer $answer */
+    public static function updateAnswer($answer)
+    {
+        try {
+            self::$db->beginTransaction();
+            $stmt = self::$db->prepare('UPDATE answer set text=:text'
+                . ' WHERE answerId=:answerId');
+            $stmt->execute(array(
+                ':answerId' => $answer->getAnswerId(),
+                ':text' => $answer->getText(),
+            ));
+
+            $affected_rows = $stmt->rowCount();
+            if ($affected_rows == 1) {
+                self::$db->commit();
+                return TRUE;
+            }
+        } catch (Exception $ex) {
+            echo $ex;
+            self::$db->rollBack();
+            return FALSE;
         }
     }
 }

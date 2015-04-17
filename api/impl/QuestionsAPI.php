@@ -36,9 +36,22 @@ $app->post('/questions/', function () use ($app) {
     }
 });
 
-$app->put('/questions/:id', function ($id) {
+$app->post('/polls/:pollId/questions/', function ($pollId) use ($app) {
     try {
-        $request = Slim::getInstance()->request();
+        $request = $app->request();
+        $json = json_decode($request->getBody());
+        $mapper = new JsonMapper();
+        $question = $mapper->map($json, new Question());
+        $question->setPollId($pollId);
+        echo json_encode(Database::getInstance()->addQuestion($question));
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+});
+
+$app->put('/questions/:id', function ($id) use ($app) {
+    try {
+        $request = $app->request();
         $json = json_decode($request->getBody());
         $mapper = new JsonMapper();
         $question = $mapper->map($json, new Question());

@@ -1,5 +1,5 @@
 <?php
-$app->get('/session', function() {
+$app->get('/session', function () {
     $session = SessionHander::getInstance()->getSession();
     $response["uid"] = $session['uid'];
     $response["email"] = $session['email'];
@@ -7,24 +7,24 @@ $app->get('/session', function() {
     echoResponse(200, $session);
 });
 
-$app->get('/logout', function() {
+$app->get('/logout', function () {
     $session = SessionHander::getInstance()->destroySession();
     $response["status"] = "info";
-    $response["message"] = "Logged out successfully";
+    $response["message"] = "Wylogowany pomyślnie.";
     echoResponse(200, $response);
 });
 
-$app->post('/login', function() use ($app) {
+$app->post('/login', function () use ($app) {
     $r = json_decode($app->request->getBody());
-    verifyRequiredParams(array('username', 'password'),$r);
+    verifyRequiredParams(array('username', 'password'), $r);
     $response = array();
     $password = $r->password;
     $username = $r->username;
     $user = Database::getInstance()->getAdminByUsernameOrEmail($username);
     if ($user != NULL) {
-        if(sha1($password) == $user->getPassword()){
+        if (sha1($password) == $user->getPassword()) {
             $response['status'] = "success";
-            $response['message'] = 'Logged in successfully.';
+            $response['message'] = "Poprawnie zalogowany. Witaj $username !";
             $response['username'] = $user->getUsername();
             $response['uid'] = $user->getId();
             $response['email'] = $user->getEmail();
@@ -37,11 +37,11 @@ $app->post('/login', function() use ($app) {
             $_SESSION['username'] = $user->getUsername();
         } else {
             $response['status'] = "error";
-            $response['message'] = 'Login failed. Incorrect credentials';
+            $response['message'] = 'Logowanie nie powiodło się. Niepoprawne dane.';
         }
-    }else {
+    } else {
         $response['status'] = "error";
-        $response['message'] = 'No such user is registered';
+        $response['message'] = 'Taki użytkownik nie jest zarejestrowany.';
     }
     echoResponse(200, $response);
 });

@@ -27,9 +27,9 @@ class JsonMapperTest_Logger
     /**
      * Log a message to the $logger object
      *
-     * @param string $level   Logging level
+     * @param string $level Logging level
      * @param string $message Text to log
-     * @param array  $context Additional information
+     * @param array $context Additional information
      *
      * @return null
      */
@@ -38,4 +38,5 @@ class JsonMapperTest_Logger
         $this->log[] = array($level, $message, $context);
     }
 }
+
 ?>

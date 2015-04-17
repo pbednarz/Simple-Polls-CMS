@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -29,7 +30,6 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class ContentTypesTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -96,7 +96,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
         $s->run();
         $body = $s->request()->getBody();
         $this->assertInstanceOf('SimpleXMLElement', $body);
-        $this->assertEquals('Clive Cussler', (string) $body->book->author);
+        $this->assertEquals('Clive Cussler', (string)$body->book->author);
     }
 
     /**
@@ -104,7 +104,7 @@ class ContentTypesTest extends PHPUnit_Framework_TestCase
      */
     public function testParsesXmlWithError()
     {
-	libxml_use_internal_errors(true);
+        libxml_use_internal_errors(true);
         \Slim\Environment::mock(array(
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'application/xml',

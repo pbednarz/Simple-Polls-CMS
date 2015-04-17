@@ -1,19 +1,30 @@
-<md-dialog aria-label="Poll">
-    <md-content class="md-default-theme" role="document" tabindex="0">
-        <h2 class="md-title ng-binding">Edycja ankiety: <span ng-bind="dialog.poll.poll_id"></span></h2>
-        <div class="dialog-content">
-            <form name="pollForm">
+<md-dialog aria-label="Poll" style="width: 400px;" class="md-padding">
+    <form name="pollForm" ng-Submit="update(dialog.poll)">
+
+        <md-content class="md-default-theme" role="document" tabindex="0">
+            <div ng-if="dialog.poll.pollId == null">
+                <h2 class="md-title ng-binding">Nowa ankieta:</h2>
+            </div>
+            <div ng-if="dialog.poll.pollId > 0">
+                <h2 class="md-title ng-binding">Edycja ankiety: <span ng-bind="dialog.poll.pollId"></span></h2>
+            </div>
+            <div class="dialog-content">
                 <md-input-container>
-                    <input required name="title" ng-model="dialog.poll.title">
+                    <label>Tytuł</label>
+                    <input required md-maxlength="30" maxlength="30" name="title" ng-model="dialog.poll.title" required>
+
                     <div ng-messages="pollForm.title.$error">
+                        <div ng-message="required">Pole wymagane.</div>
+                        <div ng-message="md-maxlength">Maksymalna długość tytułu to 30 znaków.</div>
                     </div>
                 </md-input-container>
-            </form>
+            </div>
+        </md-content>
+
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">Anuluj</md-button>
+            <md-button type="submit" class="md-primary">Gotowe</md-button>
         </div>
-    </md-content>
-    <div class="md-actions" layout="row">
-        <span flex></span>
-        <md-button ng-click="cancel()">Anuluj</md-button>
-        <md-button ng-click="update(dialog.poll)" class="md-primary">Gotowe</md-button>
-    </div>
+    </form>
 </md-dialog>

@@ -1,25 +1,39 @@
-<table class="table table-condensed" >
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>TYTUŁ</th>
-        <th>OPCJE</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="poll in ::polls" ng-animate=" 'animate' ">
-        <td><span ng-bind="::poll.poll_id"></span></td>
-        <td><span ng-bind="::poll.title"></span></td>
-        <td>
-            <md-button class="md-primary" aria-label="Poll" ng-click="showAdvanced(poll)">
-                <i class="glyphicon glyphicon-pencil"></i>
-            </md-button>
-            <a href="#/delete/{{poll.poll_id}}" class="btn btn-default btn-sm"><i
-                    class="glyphicon glyphicon glyphicon-remove"></i></a>
-            <a href="#/polls/{{poll.poll_id}}" class="btn btn-default btn-sm"><i
-                    class="glyphicon glyphicon glyphicon-th"></i></a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<md-button class="md-raised md-primary" ng-href="#/add-poll">Add New Poll</md-button>
+<md-content class="md-padding  md-whiteframe-z2">
+    <div layout="row" layout-align="center center" class="md-padding">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>TYTUŁ</th>
+                <th>OPCJE</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="poll in ::polls">
+                <td style="width:10%;"><span ng-bind="::poll.pollId"></span></td>
+                <td style="width:70%;"><span ng-bind="::poll.title"></span>
+
+                    <div flex/>
+                </td>
+                <td>
+                    <md-button class="md-primary" aria-label="Edit Poll" ng-click="editPoll(poll)">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </md-button>
+                    <md-button class="md-primary" aria-label="Delete Poll" ng-click="deletePoll(poll)">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </md-button>
+                    <md-button class="md-primary" aria-label="Poll" ng-href="#/polls/{{poll.pollId}}">
+                        <i class="glyphicon glyphicon-th"></i>
+                    </md-button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div flex/>
+    <div layout="row" layout-align="end center">
+        <md-button class="md-fab md-primary" aria-label="Add new Poll" ng-click="editPoll({})">
+            <md-icon md-svg-src="img/icons/plus.svg"></md-icon>
+        </md-button>
+    </div>
+</md-content>

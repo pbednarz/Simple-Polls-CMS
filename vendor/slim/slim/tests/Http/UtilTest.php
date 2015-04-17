@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -29,7 +30,6 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class SlimHttpUtilTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -346,7 +346,7 @@ class SlimHttpUtilTest extends PHPUnit_Framework_TestCase
         );
 
         $cookies = new \Slim\Http\Cookies();
-        $cookies->set('foo',  array(
+        $cookies->set('foo', array(
             'value' => $value,
             'expires' => '1 hour'
         ));

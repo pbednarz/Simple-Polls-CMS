@@ -85,4 +85,5 @@ class NamespaceTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\namespacetest\model\User', $res->users[0]);
     }
 }
+
 ?>

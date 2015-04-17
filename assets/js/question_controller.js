@@ -1,30 +1,30 @@
-//POLLS
-var pollControllers = angular.module('pollControllers', ['chart.js', 'ngMessages']);
+//QUESTIONS
+var questionControllers = angular.module('questionControllers', ['chart.js', 'ngMessages']);
 
-pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$mdDialog', '$routeParams', '$route',
+questionControllers.controller('QuestionListCtrl', ['$scope', '$location', '$http', '$mdDialog', '$routeParams', '$route',
     function ($scope, $location, $http, $mdDialog, $routeParams, $route) {
-        $http.get('api/polls').success(function (data) {
-            $scope.polls = data;
+        $http.get('api/polls/' + $routeParams.pollId + '/questions').success(function (data) {
+            $scope.questions = data;
         }).
             error(function (data, status, headers, config) {
-                $scope.polls = "error";
+                $scope.questions = "error";
             });
 
 
-        $scope.details = function (poll) {
-            $location.path('/polls/' + poll.pollId);
+        $scope.details = function (question) {
+            $location.path('/polls/' + question.pollId + '/questions' + question.questionId);
             $location.replace();
         };
 
-        $scope.deletePoll = function (poll) {
+        $scope.deleteQuestion = function (question) {
             var confirm = $mdDialog.confirm()
-                .title('Czy chcesz usunąć ankietę?')
-                .content(poll.title)
-                .ariaLabel('Poll delete')
+                .title('Czy chcesz usunąć pytanie?')
+                .content(question.text)
+                .ariaLabel('Question delete')
                 .ok('Usuń')
                 .cancel('Anuluj');
             $mdDialog.show(confirm).then(function () {
-                $http.delete('api/polls/' + poll.pollId)
+                $http.delete('api/questions/' + question.questionId)
                     .success(function (data) {
                         $route.reload();
                     })
@@ -35,18 +35,17 @@ pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$md
             });
         };
 
-        $scope.editPoll = function (poll) {
+        $scope.editQuestion = function (question) {
             $mdDialog.show({
                 controller: DialogController,
                 controllerAs: 'dialog',
                 bindToController: true,
-                templateUrl: './assets/tpl/edit_polls_dialog.html',
+                templateUrl: './assets/tpl/edit_questions_dialog.html',
                 locals: {
-                    poll: poll
+                    question: question
                 }
             })
-                .then(function (poll) {
-
+                .then(function (question) {
                 });
         };
 
@@ -58,8 +57,8 @@ pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$md
                 $mdDialog.cancel();
             };
             $scope.update = function (data) {
-                if (data.pollId == null) {
-                    $http.post('api/polls/', data)
+                if (data.questionId == null) {
+                    $http.post('api/polls/' + $routeParams.pollId + '/questions/', data)
                         .success(function (data) {
                             $route.reload();
                             $mdDialog.hide(data);
@@ -68,7 +67,7 @@ pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$md
                             alert("Error");
                         });
                 } else {
-                    $http.put('api/polls/' + data.pollId, data)
+                    $http.put('api/questions/' + data.questionId, data)
                         .success(function (data) {
                             $route.reload();
                             $mdDialog.hide(data);

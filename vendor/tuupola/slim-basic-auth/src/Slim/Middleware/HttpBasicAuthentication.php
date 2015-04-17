@@ -15,8 +15,8 @@
 
 namespace Slim\Middleware;
 
- use \Slim\Middleware\HttpBasicAuthentication\ArrayAuthenticator;
- use \Slim\Middleware\HttpBasicAuthentication\DefaultValidator;
+use \Slim\Middleware\HttpBasicAuthentication\ArrayAuthenticator;
+use \Slim\Middleware\HttpBasicAuthentication\DefaultValidator;
 
 class HttpBasicAuthentication extends \Slim\Middleware
 {

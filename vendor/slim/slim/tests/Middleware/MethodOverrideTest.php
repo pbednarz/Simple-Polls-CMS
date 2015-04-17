@@ -44,7 +44,8 @@ class CustomAppMethod
         $this->environment = \Slim\Environment::getInstance();
     }
 
-    public function &environment() {
+    public function &environment()
+    {
         return $this->environment;
     }
 

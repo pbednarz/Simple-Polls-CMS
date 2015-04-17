@@ -3,23 +3,23 @@
 class Poll implements JsonSerializable
 {
 
-    private $pollId;
+    private $poll_id;
     private $title;
     private $createDate;
 
     public function getPollId()
     {
-        return $this->pollId;
+        return $this->poll_id;
+    }
+
+    public function setPollId($poll_id)
+    {
+        $this->poll_id = $poll_id;
     }
 
     public function getTitle()
     {
         return $this->title;
-    }
-
-    public function setPollId($pollId)
-    {
-        $this->pollId = $pollId;
     }
 
     public function setTitle($title)
@@ -50,4 +50,5 @@ class Poll implements JsonSerializable
         return get_object_vars($this);
     }
 }
+
 ?>

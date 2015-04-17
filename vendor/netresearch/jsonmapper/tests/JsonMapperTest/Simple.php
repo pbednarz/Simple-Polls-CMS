@@ -135,4 +135,5 @@ class JsonMapperTest_Simple
         return $this->protectedStrNoSetter;
     }
 }
+
 ?>

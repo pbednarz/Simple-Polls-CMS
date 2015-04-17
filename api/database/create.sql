@@ -21,11 +21,11 @@ USE `polls` ;
 DROP TABLE IF EXISTS `polls`.`user` ;
 
 CREATE TABLE IF NOT EXISTS `polls`.`user` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `birth_date` DATETIME NULL,
+  `userId` INT NOT NULL AUTO_INCREMENT,
+  `birthDate` DATETIME NULL,
   `sex` VARCHAR(255) NULL,
-  `create_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`));
+  `createDate` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`userId`));
 
 
 -- -----------------------------------------------------
@@ -34,10 +34,10 @@ CREATE TABLE IF NOT EXISTS `polls`.`user` (
 DROP TABLE IF EXISTS `polls`.`poll` ;
 
 CREATE TABLE IF NOT EXISTS `polls`.`poll` (
-  `poll_id` INT NOT NULL AUTO_INCREMENT,
+  `pollId` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NOT NULL,
-  `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`poll_id`),
+  `createDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`pollId`),
   UNIQUE INDEX `title_UNIQUE` (`title` ASC));
 
 
@@ -47,15 +47,15 @@ CREATE TABLE IF NOT EXISTS `polls`.`poll` (
 DROP TABLE IF EXISTS `polls`.`question` ;
 
 CREATE TABLE IF NOT EXISTS `polls`.`question` (
-  `question_id` INT NOT NULL AUTO_INCREMENT,
-  `poll_id` INT NOT NULL,
+  `questionId` INT NOT NULL AUTO_INCREMENT,
+  `pollId` INT NOT NULL,
   `text` VARCHAR(255) NOT NULL,
-  `allow_multiple_answers` TINYINT(1) NULL DEFAULT 1,
-  PRIMARY KEY (`question_id`, `poll_id`),
-  INDEX `fk_question_poll_idx` (`poll_id` ASC),
+  `allowMultipleAnswers` TINYINT(1) NULL DEFAULT 1,
+  PRIMARY KEY (`questionId`, `pollId`),
+  INDEX `fk_question_pollIdx` (`pollId` ASC),
   CONSTRAINT `fk_question_poll`
-    FOREIGN KEY (`poll_id`)
-    REFERENCES `polls`.`poll` (`poll_id`)
+    FOREIGN KEY (`pollId`)
+    REFERENCES `polls`.`poll` (`pollId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
@@ -66,15 +66,15 @@ CREATE TABLE IF NOT EXISTS `polls`.`question` (
 DROP TABLE IF EXISTS `polls`.`answer` ;
 
 CREATE TABLE IF NOT EXISTS `polls`.`answer` (
-  `answer_id` INT NOT NULL AUTO_INCREMENT,
-  `question_id` INT NOT NULL,
-  `poll_id` INT NOT NULL,
+  `answerId` INT NOT NULL AUTO_INCREMENT,
+  `questionId` INT NOT NULL,
+  `pollId` INT NOT NULL,
   `text` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`answer_id`, `question_id`, `poll_id`),
-  INDEX `fk_answer_question1_idx` (`question_id` ASC, `poll_id` ASC),
+  PRIMARY KEY (`answerId`, `questionId`, `pollId`),
+  INDEX `fk_answer_question1_idx` (`questionId` ASC, `pollId` ASC),
   CONSTRAINT `fk_answer_question1`
-    FOREIGN KEY (`question_id` , `poll_id`)
-    REFERENCES `polls`.`question` (`question_id` , `poll_id`)
+    FOREIGN KEY (`questionId` , `pollId`)
+    REFERENCES `polls`.`question` (`questionId` , `pollId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
@@ -85,12 +85,12 @@ CREATE TABLE IF NOT EXISTS `polls`.`answer` (
 DROP TABLE IF EXISTS `polls`.`admin` ;
 
 CREATE TABLE IF NOT EXISTS `polls`.`admin` (
-  `admin_id` INT NOT NULL AUTO_INCREMENT,
+  `adminId` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(64) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NULL,
-  `create_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`admin_id`),
+  `createTime` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`adminId`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC));
 
@@ -101,21 +101,21 @@ CREATE TABLE IF NOT EXISTS `polls`.`admin` (
 DROP TABLE IF EXISTS `polls`.`user_answer` ;
 
 CREATE TABLE IF NOT EXISTS `polls`.`user_answer` (
-  `user_id` INT NOT NULL,
-  `poll_id` INT NOT NULL,
-  `question_id` INT NOT NULL,
-  `answer_id` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `poll_id`, `question_id`, `answer_id`),
-  INDEX `fk_user_has_answer_answer1_idx` (`answer_id` ASC, `question_id` ASC, `poll_id` ASC),
-  INDEX `fk_user_has_answer_user1_idx` (`user_id` ASC),
+  `userId` INT NOT NULL,
+  `pollId` INT NOT NULL,
+  `questionId` INT NOT NULL,
+  `answerId` INT NOT NULL,
+  PRIMARY KEY (`userId`, `pollId`, `questionId`, `answerId`),
+  INDEX `fk_user_has_answer_answer1_idx` (`answerId` ASC, `questionId` ASC, `pollId` ASC),
+  INDEX `fk_user_has_answer_user1_idx` (`userId` ASC),
   CONSTRAINT `fk_user_has_answer_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `polls`.`user` (`user_id`)
+    FOREIGN KEY (`userId`)
+    REFERENCES `polls`.`user` (`userId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_answer_answer1`
-    FOREIGN KEY (`answer_id` , `question_id` , `poll_id`)
-    REFERENCES `polls`.`answer` (`answer_id` , `question_id` , `poll_id`)
+    FOREIGN KEY (`answerId` , `questionId` , `pollId`)
+    REFERENCES `polls`.`answer` (`answerId` , `questionId` , `pollId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 

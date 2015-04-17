@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -29,12 +30,11 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class MyWriter
 {
-    public function write( $object, $level )
+    public function write($object, $level)
     {
-        echo (string) $object;
+        echo (string)$object;
 
         return true;
     }

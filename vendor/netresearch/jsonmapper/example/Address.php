@@ -1,4 +1,5 @@
 <?php
+
 class Address
 {
     public $street;
@@ -19,4 +20,5 @@ class Address
         );
     }
 }
+
 ?>

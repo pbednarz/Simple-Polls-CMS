@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Slim - a micro PHP 5 framework
  *
@@ -29,7 +30,6 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 class SetTest extends PHPUnit_Framework_TestCase
 {
     protected $bag;
@@ -46,7 +46,7 @@ class SetTest extends PHPUnit_Framework_TestCase
     {
         $this->bag->set('foo', 'bar');
         $this->assertArrayHasKey('foo', $this->property->getValue($this->bag));
-        $bag =  $this->property->getValue($this->bag);
+        $bag = $this->property->getValue($this->bag);
         $this->assertEquals('bar', $bag['foo']);
     }
 
