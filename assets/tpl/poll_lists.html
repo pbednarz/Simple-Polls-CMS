@@ -1,4 +1,4 @@
-<table class="table table-condensed">
+<table class="table table-condensed" >
     <thead>
     <tr>
         <th>ID</th>
@@ -7,11 +7,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="poll in polls">
-        <td>{{poll.poll_id}}</td>
-        <td>{{poll.title}}</td>
+    <tr ng-repeat="poll in ::polls" ng-animate=" 'animate' ">
+        <td><span ng-bind="::poll.poll_id"></span></td>
+        <td><span ng-bind="::poll.title"></span></td>
         <td>
-            <md-button class="md-primary" ng-click="showAdvanced(poll)">
+            <md-button class="md-primary" aria-label="Poll" ng-click="showAdvanced(poll)">
                 <i class="glyphicon glyphicon-pencil"></i>
             </md-button>
             <a href="#/delete/{{poll.poll_id}}" class="btn btn-default btn-sm"><i
@@ -22,6 +22,4 @@
     </tr>
     </tbody>
 </table>
-
 <md-button class="md-raised md-primary" ng-href="#/add-poll">Add New Poll</md-button>
-</md-content>

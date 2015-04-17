@@ -1,37 +1,32 @@
 <?php
-
 // Polls
-function getPolls()
-{
+$app->get('/polls/', function () {
     try {
         echo json_encode(Database::getInstance()->getPolls());
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function getPoll($id)
-{
+$app->get('/polls/:id', function ($id) {
     try {
         echo json_encode(Database::getInstance()->getPollById($id));
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function deletePoll($id)
-{
+$app->delete('/polls/:id', function ($id) {
     try {
         echo json_encode(Database::getInstance()->deletePoll($id));
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function addPoll()
-{
+$app->post('/polls/', function () use ($app) {
     try {
-        $request = Slim::getInstance()->request();
+        $request = $app->request();
         $json = json_decode($request->getBody());
         $mapper = new JsonMapper();
         $poll = $mapper->map($json, new Poll());
@@ -39,12 +34,11 @@ function addPoll()
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function updatePoll()
-{
+$app->put('/polls/:id', function () use ($app) {
     try {
-        $request = Slim::getInstance()->request();
+        $request = $app->request();
         $json = json_decode($request->getBody());
         $mapper = new JsonMapper();
         $poll = $mapper->map($json, new Poll());
@@ -52,6 +46,6 @@ function updatePoll()
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
 ?>

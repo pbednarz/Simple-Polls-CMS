@@ -1,11 +1,10 @@
 //QUESTIONS
 var questionControllers = angular.module('questionControllers', ['chart.js']);
 
-questionControllers.controller('QuestionListCtrl', ['$scope', '$rootScope', '$http', '$routeParams',
-    function ($scope, $rootScope, $http, $routeParams) {
+questionControllers.controller('QuestionListCtrl', ['$scope', '$http', '$routeParams',
+    function ($scope, $http, $routeParams) {
         $http.get('api/polls/' + $routeParams.pollId + '/questions').success(function (data) {
             $scope.questions = data;
-            $rootScope.pollId = $routeParams.pollId;
         }).
             error(function (data, status, headers, config) {
                 $scope.questions = "error";

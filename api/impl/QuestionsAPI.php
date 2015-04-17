@@ -1,5 +1,12 @@
 <?php
-// Questions
+$app->get('/questions/:id', function ($id) {
+    try {
+        echo json_encode(Database::getInstance()->getQuestionById($id));
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+});
+
 function getQuestion($poll_id, $id)
 {
     try {
@@ -9,19 +16,17 @@ function getQuestion($poll_id, $id)
     }
 }
 
-function deleteQuestion($id)
-{
+$app->delete('/questions/:id', function ($id) {
     try {
         echo json_encode(Database::getInstance()->deleteQuestion($id));
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function addQuestion()
-{
+$app->post('/questions/', function () use ($app) {
     try {
-        $request = Slim::getInstance()->request();
+        $request = $app->request();
         $json = json_decode($request->getBody());
         $mapper = new JsonMapper();
         $question = $mapper->map($json, new Question());
@@ -29,10 +34,9 @@ function addQuestion()
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function updateQuestion($id)
-{
+$app->put('/questions/:id', function ($id) {
     try {
         $request = Slim::getInstance()->request();
         $json = json_decode($request->getBody());
@@ -43,23 +47,21 @@ function updateQuestion($id)
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function getQuestionsForPoll($poll_id)
-{
+$app->get('/polls/:poll_id/questions/', function ($poll_id) {
     try {
         echo json_encode(Database::getInstance()->getQuestionsForPoll($poll_id));
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function getQuestions()
-{
+$app->get('/questions/', function () {
     try {
         echo json_encode(Database::getInstance()->getQuestions());
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 ?>

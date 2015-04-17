@@ -1,36 +1,31 @@
 <?php
-// Users
-function getUsers()
-{
+$app->post('/users/', function() use ($app) {
     try {
         echo json_encode(Database::getInstance()->getUsers());
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function getUser($id)
-{
+$app->post('/users/:id', function($id) use ($app) {
     try {
         echo json_encode(Database::getInstance()->getUserByID($id));
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function deleteUser($id)
-{
+$app->delete('/users/:id', function($id) use ($app) {
     try {
         echo json_encode(Database::getInstance()->deleteUser($id));
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 
-function addUser()
-{
+$app->post('/users/', function() use ($app) {
     try {
-        $request = Slim::getInstance()->request();
+        $request = $app->request();
         $json = json_decode($request->getBody());
         $mapper = new JsonMapper();
         $user = $mapper->map($json, new User());
@@ -38,5 +33,5 @@ function addUser()
     } catch (PDOException $e) {
         echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
-}
+});
 ?>

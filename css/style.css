@@ -1,6 +1,6 @@
 md-toolbar h1 {
-  font-size: 1.20em;
-  font-weight: 400;
+    font-size: 1.20em;
+    font-weight: 400;
 }
 
 .docs-menu-icon {
@@ -9,30 +9,49 @@ md-toolbar h1 {
     margin-right: 16px;
     padding: 0;
 }
+
 .docs-menu-separator-icon {
     margin: 0;
     padding: 0 10px;
 }
+
 .docs-menu-separator-icon img {
     height: 16px;
 }
+
 .md-breadcrumb-page {
     display: inline-block;
     word-wrap: break-word;
 }
+
 .layout-content,
 .doc-content {
     max-width: 864px;
     width: 70%;
     padding: 16px;
-    margin-left: auto ;
-    margin-right: auto ;
+    margin-left: auto;
+    margin-right: auto;
 }
-.demo-container {
+
+.view-container {
     border-radius: 4px;
     margin-bottom: 16px;
     -webkit-transition: 0.02s padding cubic-bezier(0.35, 0, 0.25, 1);
     transition: 0.02s padding cubic-bezier(0.35, 0, 0.25, 1);
     position: relative;
     padding-bottom: 0;
+}
+
+.toolbar-icon {
+    height: 36px;
+    position: absolute;
+    left: 0px;
+    top: -1px;
+    margin-top: 0;
+}
+
+.toolbar-btn {
+    position: relative;
+    padding-left: 30px;
+    margin-right: 15px;
 }

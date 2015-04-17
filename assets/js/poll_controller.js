@@ -1,7 +1,7 @@
 //POLLS
 var pollControllers = angular.module('pollControllers', ['chart.js']);
 
-pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$mdDialog', '$routeParams',
+pollControllers.controller('PollListCtrl', ['$scope', '$location','$http', '$mdDialog', '$routeParams',
     function ($scope, $location, $http, $mdDialog, $routeParams) {
         $http.get('api/polls').success(function (data) {
             $scope.polls = data;
@@ -49,6 +49,4 @@ pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$md
             };
         }
     }
-
-
 ]);

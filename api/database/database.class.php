@@ -4,13 +4,15 @@ Class Database
 {
 
     private static $db;
+    private static $oInstance = false;
 
     public static function getInstance()
     {
         if (!self::$db) {
             self::$db = new PDO('mysql:host=localhost;dbname=polls;charset=utf8', 'root', '');
-            return new Database();
+            self::$oInstance = new Database();
         }
+        return self::$oInstance;
     }
 
     /** @var Admin $admin */
@@ -71,20 +73,20 @@ Class Database
         }
     }
 
-    public static function authenticateAdminByUsernameAndPassword($username, $password)
+    public static function authenticateAdminByUsernameOrEmailAndPassword($username, $password)
     {
-        $stmt = self::$db->prepare('SELECT * FROM admin WHERE username=? and password=?');
-        $stmt->execute(array($username, sha1($password)));
+        $stmt = self::$db->prepare('SELECT * FROM admin WHERE (username=? or email=?) and password=?');
+        $stmt->execute(array($username, $username, sha1($password)));
         if ($stmt->rowCount() > 0) {
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
-    public static function getAdminByUsername($username)
+    public static function getAdminByUsernameOrEmail($username)
     {
-        $stmt = self::$db->prepare('SELECT * FROM admin WHERE username=?');
-        $stmt->execute(array($username));
+        $stmt = self::$db->prepare('SELECT * FROM admin WHERE username=? OR email=?');
+        $stmt->execute(array($username, $username));
         if ($stmt->rowCount() > 0) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = $results[0];
