@@ -1,0 +1,19 @@
+<md-content class="md-whiteframe-z2">
+    <div class="md-padding">
+        <md-toolbar class="md-primary">
+            <h1 class="md-toolbar-tools">
+                Podana strona nie istnieje - 404
+            </h1>
+        </md-toolbar>
+        <md-content layout-padding style="padding: 24px;">
+            <div layout="column" layout-align="center center">
+                <p>Przepraszamy, ale podana strona nie istnieje.
+                    <a ng-if="authenticated" ng-href="./index.html#/polls">Zapraszamy na stronę główną.</a>
+                    <a ng-if="!authenticated" ng-href="./index.html#/login">Zapraszamy na stronę logowania.</a></p>
+                <img src="./img/404.jpg"
+                     alt="Constructocat by https://github.com/jasoncostello"
+                     style="width: 40%; margin-right: auto; margin-left: auto">
+            </div>
+        </md-content>
+    </div>
+</md-content>

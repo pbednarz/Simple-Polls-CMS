@@ -28,8 +28,16 @@ app.config(['$routeProvider', '$locationProvider',
                 controller: 'AnswerListCtrl',
                 title: "Odpowiedzi"
             })
+            .when('/404', {
+                templateUrl: './assets/tpl/404.html',
+                title: "404",
+                controller: 'authCtrl'
+            })
+            .when('/', {
+                redirectTo: '/login'
+            })
             .otherwise({
-                redirectTo: '/polls'
+                redirectTo: '/404'
             });
 
     }]).run(['$location', '$rootScope', '$route', 'Data', function ($location, $rootScope, $route, Data) {
@@ -48,7 +56,7 @@ app.config(['$routeProvider', '$locationProvider',
                 $rootScope.email = results.email;
             } else {
                 var nextUrl = next.$$route.originalPath;
-                if (nextUrl == '/login') {
+                if (nextUrl == '/login' || nextUrl == '/404') {
                 } else {
                     $location.path("/login");
                 }
