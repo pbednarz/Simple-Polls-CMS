@@ -40,7 +40,7 @@ app.config(['$routeProvider', '$locationProvider',
                 redirectTo: '/404'
             });
 
-    }]).run(['$location', '$rootScope', '$route', 'Data', function ($location, $rootScope, $route, Data) {
+    }]).run(['$window', '$location', '$rootScope', '$route', 'Data', function ($window, $location, $rootScope, $route, Data) {
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
         $rootScope.title = current.$$route.title;
         $rootScope.pollId = current.params.pollId;
