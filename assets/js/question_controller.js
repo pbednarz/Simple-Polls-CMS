@@ -42,7 +42,7 @@ questionControllers.controller('QuestionListCtrl', ['$scope', '$location', '$htt
                 bindToController: true,
                 templateUrl: './assets/tpl/edit_questions_dialog.html',
                 locals: {
-                    question: question
+                    question: angular.copy(question)
                 }
             })
                 .then(function (question) {

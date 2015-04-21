@@ -42,7 +42,7 @@ pollControllers.controller('PollListCtrl', ['$scope', '$location', '$http', '$md
                 bindToController: true,
                 templateUrl: './assets/tpl/edit_polls_dialog.html',
                 locals: {
-                    poll: poll
+                    poll: angular.copy(poll)
                 }
             })
                 .then(function (poll) {

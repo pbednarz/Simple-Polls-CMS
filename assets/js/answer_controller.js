@@ -46,7 +46,7 @@ answerControllers.controller('AnswerListCtrl', ['$scope', '$location', '$http', 
                 bindToController: true,
                 templateUrl: './assets/tpl/edit_answers_dialog.html',
                 locals: {
-                    answer: answer
+                    answer: angular.copy(answer)
                 }
             })
                 .then(function (answer) {
